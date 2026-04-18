@@ -1,0 +1,24 @@
+:root {
+  --bg-color: #f1f5f9;
+  --headline-color: #0f172a;
+  --font-color: #1e293b;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Inter, "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--bg-color);
+  color: var(--font-color);
+}
+
+#app-title {
+  color: var(--headline-color);
+}
+
+.app-card {
+  background-color: #ffffff;
+}

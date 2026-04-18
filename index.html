@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sales Tracker Web App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="min-h-screen">
+    <main class="mx-auto max-w-6xl px-4 py-8">
+      <h1 id="app-title" class="mb-6 text-center text-3xl font-bold">Sales Tracker Web App</h1>
+
+      <section class="app-card mb-6 rounded-xl p-6 shadow-md">
+        <h2 class="mb-4 text-xl font-semibold">Add / Edit Sale</h2>
+        <form id="sales-form" class="grid gap-4 md:grid-cols-2">
+          <input id="saleId" type="hidden" />
+
+          <label class="text-sm font-medium">
+            Customer
+            <input
+              id="customerName"
+              type="text"
+              required
+              class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 outline-none ring-2 ring-transparent transition focus:ring-blue-500"
+              placeholder="John Smith"
+            />
+          </label>
+
+          <label class="text-sm font-medium">
+            Product
+            <input
+              id="productType"
+              type="text"
+              required
+              class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 outline-none ring-2 ring-transparent transition focus:ring-blue-500"
+              placeholder="Laptop"
+            />
+          </label>
+
+          <label class="text-sm font-medium">
+            Qty
+            <input
+              id="quantity"
+              type="number"
+              min="1"
+              step="1"
+              required
+              class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 outline-none ring-2 ring-transparent transition focus:ring-blue-500"
+            />
+          </label>
+
+          <label class="text-sm font-medium">
+            Price
+            <input
+              id="price"
+              type="number"
+              min="0.01"
+              step="0.01"
+              required
+              class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 outline-none ring-2 ring-transparent transition focus:ring-blue-500"
+            />
+          </label>
+
+          <label class="text-sm font-medium md:col-span-2">
+            Date
+            <input
+              id="saleDate"
+              type="date"
+              required
+              class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 outline-none ring-2 ring-transparent transition focus:ring-blue-500"
+            />
+          </label>
+
+          <div class="flex gap-2 md:col-span-2">
+            <button
+              id="saveButton"
+              type="submit"
+              class="rounded-lg bg-blue-600 px-4 py-2 font-semibold text-white transition hover:bg-blue-700"
+            >
+              Save Sale
+            </button>
+            <button
+              id="cancelEditButton"
+              type="button"
+              class="hidden rounded-lg bg-slate-500 px-4 py-2 font-semibold text-white transition hover:bg-slate-600"
+            >
+              Cancel Edit
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <section class="app-card mb-6 rounded-xl p-6 shadow-md">
+        <h2 class="mb-4 text-xl font-semibold">Filter Sales</h2>
+        <div class="grid gap-4 md:grid-cols-3">
+          <label class="text-sm font-medium">
+            Day
+            <input
+              id="dayFilter"
+              type="date"
+              class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 outline-none ring-2 ring-transparent transition focus:ring-blue-500"
+            />
+          </label>
+
+          <label class="text-sm font-medium">
+            Month
+            <select
+              id="monthFilter"
+              class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 outline-none ring-2 ring-transparent transition focus:ring-blue-500"
+            >
+              <option value="">All Months</option>
+            </select>
+          </label>
+
+          <label class="text-sm font-medium">
+            Year
+            <select
+              id="yearFilter"
+              class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 outline-none ring-2 ring-transparent transition focus:ring-blue-500"
+            >
+              <option value="">All Years</option>
+            </select>
+          </label>
+        </div>
+      </section>
+
+      <section class="app-card mb-6 rounded-xl p-6 shadow-md">
+        <h2 class="mb-4 text-xl font-semibold">Sales Records</h2>
+        <div class="overflow-x-auto">
+          <table class="min-w-full border-collapse text-sm">
+            <thead>
+              <tr class="bg-slate-100">
+                <th class="border border-slate-200 px-3 py-2 text-left">Date</th>
+                <th class="border border-slate-200 px-3 py-2 text-left">Customer</th>
+                <th class="border border-slate-200 px-3 py-2 text-left">Product</th>
+                <th class="border border-slate-200 px-3 py-2 text-right">Qty</th>
+                <th class="border border-slate-200 px-3 py-2 text-right">Price</th>
+                <th class="border border-slate-200 px-3 py-2 text-center">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="salesTableBody"></tbody>
+          </table>
+        </div>
+        <p id="emptyState" class="mt-3 hidden text-slate-500">No sales records for the selected filters.</p>
+      </section>
+
+      <section class="app-card mb-6 rounded-xl p-6 shadow-md">
+        <h2 class="mb-4 text-xl font-semibold">Totals</h2>
+        <div class="grid gap-4 md:grid-cols-2">
+          <div class="rounded-lg bg-slate-100 p-4">
+            <p class="text-sm text-slate-600">Monthly Total</p>
+            <p id="monthlyTotal" class="text-2xl font-bold">$0.00</p>
+          </div>
+          <div class="rounded-lg bg-slate-100 p-4">
+            <p class="text-sm text-slate-600">Yearly Total</p>
+            <p id="yearlyTotal" class="text-2xl font-bold">$0.00</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="app-card rounded-xl p-6 shadow-md">
+        <h2 class="mb-4 text-xl font-semibold">Theme Customizer</h2>
+        <div class="grid gap-4 md:grid-cols-3">
+          <label class="text-sm font-medium">
+            Background
+            <input id="backgroundColor" type="color" class="mt-1 h-10 w-full cursor-pointer rounded-lg border border-slate-300 p-1" />
+          </label>
+          <label class="text-sm font-medium">
+            Headline
+            <input id="headlineColor" type="color" class="mt-1 h-10 w-full cursor-pointer rounded-lg border border-slate-300 p-1" />
+          </label>
+          <label class="text-sm font-medium">
+            Font
+            <input id="fontColor" type="color" class="mt-1 h-10 w-full cursor-pointer rounded-lg border border-slate-300 p-1" />
+          </label>
+        </div>
+      </section>
+    </main>
+
+    <script src="script.js" defer></script>
+  </body>
+</html>
